@@ -4,7 +4,6 @@ import com.example.wazirx.model.Fund;
 import com.example.wazirx.model.Ticker;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.codec.digest.HmacAlgorithms;
 import org.apache.commons.codec.digest.HmacUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -68,10 +67,6 @@ public class WazirxApiService {
 					});
 			List<Fund> funds = result.getBody();
 			assert funds != null;
-			funds = funds.stream()
-				.filter(fund -> fund.getFree() > 0)
-				.collect(Collectors.toList());
-			log.info("Funds: {}", funds);
 			return funds;
 		} catch (UnsupportedEncodingException e) {
 			return null;

@@ -34,13 +34,19 @@ public class ScheduledWazirxUpdates {
 	@Scheduled(fixedRate = 10000)
 	public void sendUpdatesOnIncrementPercentage() {
 		log.info("Sending Wazirx updates");
-		List<Fund> currentFunds = wazirxApiService.getFund();
+
+		List<Fund> funds = wazirxApiService.getFund();
+		List<Fund> currentFunds = WazirxUtils.getCurrentFunds(funds);
+		log.info("currentFunds: {}", currentFunds);
+
 		List<Ticker> dailyTickerStats = wazirxApiService.dailyTickerStats();
+
 		List<Ticker> filteredTickers = dailyTickerStats.stream()
 			.filter(ticker -> checkIfFundMatches(currentFunds, ticker))
 			.filter(ticker -> {
 				double percentChange = WazirxUtils.getPercentageChange(ticker);
-				log.info("Percent change: {}", percentChange);
+				// trick to print only 2 decimal places
+				log.info("ticker: {} Percent change: {}", ticker.getSymbol(), Math.round(percentChange * 100.0) / 100.0);
 				return  percentChange > incrementOrDecrementPercent;
 			})
 			.toList();
