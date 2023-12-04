@@ -31,7 +31,7 @@ public class ScheduledWazirxUpdates {
 		this.telegramBotService = telegramBotService;
 	}
 
-	@Scheduled(fixedRate = 10000)
+	@Scheduled(fixedRate = 600000)
 	public void sendUpdatesOnIncrementPercentage() {
 		log.info("Sending Wazirx updates");
 
